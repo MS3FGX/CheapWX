@@ -1,11 +1,29 @@
 // BME280 sensor enclosure
 // Licensed under the GPLv3, see "COPYING"
-
 // Increase resolution
 $fn=50;
 
-// Cover olerance
+// Cover tolerance (should be sane default for most printers)
 buff = .5;
+
+// PCB mount (comment out one of them)
+// Ada PCB mount
+pcb_post_w = 13;
+pcb_post_z = 6;
+pcb_post_dia = 5;
+pcb_screw_dia = 2.5;
+pcb_post_y_offset = 16;
+pcb_post_x_offset = 0;
+
+/*
+// DIYmall PCB mount
+pcb_post_w = 0;
+pcb_post_z = 6;
+pcb_post_dia = 5;
+pcb_screw_dia = 3.1;
+pcb_post_y_offset = 14.5;
+pcb_post_x_offset = -3;
+*/
 
 // Center compartment
 body_x = 25;
@@ -20,14 +38,7 @@ wings_dia = 15;
 wings_z = 3;
 wings_y_margin = 5;
 
-// PCB mount
-pcb_post_w = 13;
-pcb_post_dia = 5;
-pcb_post_z = 6;
-pcb_post_y_offset = 16;
-
 // Screw sizes
-pcb_dia = 2.5;
 cover_dia = 3.1;
 cover_cs = 6.6;
 mounting_dia = 4;
@@ -45,7 +56,32 @@ grille_angle = 25;
 // Static math
 pcb_z_offset = ((body_t / 2) + (pcb_post_z / 2));
 
-// Modules
+// Sensor PCB analogs
+// Adafruit 
+module ada_pcb()
+{
+    difference()
+    {
+        color("blue") cube([19, 19, 3], center=true);
+        translate([6.5, 6, 0])
+            cylinder(h=5, r=1.5, center=true);
+        translate([-6.5, 6, 0])
+            cylinder(h=5, r=1.5, center=true);        
+    }
+}
+
+// DIYmall
+module diy_pcb()
+{
+    difference()
+    {
+        color("purple") cube([11, 14, 4], center=true);
+        translate([-3, 4.5, 0])
+            cylinder(h=5, r=1.5, center=true);
+    }
+}
+
+// Load Weather Underground logo, could be modified for other art
 module wu_logo()
 {
     translate([2, -((body_y / 2) + 3), (body_z / 2)])
@@ -53,6 +89,7 @@ module wu_logo()
             import("STL/wu_logo.stl");
 }
 
+// Modules
 module rounded_rect(xsize, ysize, zsize)
 {
     hull()
@@ -100,7 +137,7 @@ module corner_post(dia)
 
 module pcb_post(dia)
 {   
-    translate([0, pcb_post_y_offset, pcb_z_offset])
+    translate([pcb_post_x_offset, pcb_post_y_offset, pcb_z_offset])
     {
         translate([-(pcb_post_w / 2), 0, 0])
             cylinder(h=pcb_post_z, r=(dia / 2), center=true);
@@ -224,7 +261,7 @@ module pcb_mount()
     {
         pcb_post(pcb_post_dia);
         translate([0, 0, 1])
-            pcb_post(pcb_dia);
+            pcb_post(pcb_screw_dia);
     }
     
     translate([0, 5, (body_t + 1)])
@@ -273,15 +310,16 @@ module bottom()
     strain_relief();
 }
 
-module board_placeholder()
-{
-    color("blue") cube([19, 19, 3], center=true);
-}
-
 // Rendering
 bottom();
 //translate([0, 0, 8]) cover();
-//translate([0, 9, 6]) board_placeholder();
+
+// PCB models
+translate([0, 10, 8])
+{   
+    //diy_pcb();
+    //ada_pcb();
+}
 
 // STL Export
 //rotate([0, 180, 0]) cover();
