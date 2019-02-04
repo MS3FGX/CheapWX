@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # Weather Underground Uploader by Tom Nardi
 # Licensed under the GPLv3, see "COPYING"
-version = "1.5"
+version = "1.51"
 
 import requests
 from Adafruit_BME280 import *
@@ -26,8 +26,8 @@ software_type = "WU_Upload-v" + version
 
 print("Reading sensor...")
 
-# Init sensor
-sensor = BME280(mode=BME280_OSAMPLE_8)
+# Init sensor (fix for upsteam change, 2/4/2019)
+sensor = BME280(t_mode=BME280_OSAMPLE_8, p_mode=BME280_OSAMPLE_8, h_mode=BME280_OSAMPLE_8)
 
 # Read data from sensor
 sensor_temp = sensor.read_temperature_f()

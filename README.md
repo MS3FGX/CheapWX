@@ -18,8 +18,6 @@ The software side of the project is a Python script I put together which gets th
 
 In addition to uploading to WU, the script also logs conditions to a plain-text log file on the local filesystem. The log will also record things like authentication errors or network timeouts, so it shouldn't be too difficult to diagnose issues on a headless system that's running the script via cron.
 
-> **Note**: The script requires functions that are not present in the stock Adafruit BME280 driver. As of this writing my PR for the new functions hasn't been accepted, so until then [you'll have to pull my fork of the driver](https://github.com/MS3FGX/Adafruit_Python_BME280) down if you want to run this script on your own setup. Remember the file "Adafruit_BME280.py" must be in the same directory as the script for it to work.
-
 ### 3D Printed Enclosure
 There are a lot of ways to enclose the sensor, but I went with a 3D printed one of my own design. You'll notice my enclosure doesn't have the traditional radiation shield you might expect for a weather station; that's because I didn't design it to be in direct sunlight, or even directly exposed to the elements for that matter. My enclosure is meant to be flush mount to the wall in an area where the rain and sun can't get to it, like on a porch or under an overhang of some type.
 
